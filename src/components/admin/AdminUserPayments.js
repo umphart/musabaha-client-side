@@ -251,29 +251,29 @@ const AdminUserPayments = () => {
                     )}
                   </td>
 
-                  <td className="flex gap-2">
-                    {p.status === "pending" && (
-                      <>
-                        <button
-                          className="text-green-600 hover:text-green-800"
-                          onClick={() => handlePaymentAction(p.id, "approved")}
-                          title="Approve"
-                        >
-                          <FiCheck size={16} />
-                        </button>
-                        <button
-                          className="text-red-600 hover:text-red-800"
-                          onClick={() => handlePaymentAction(p.id, "reject")}
-                          title="Reject"
-                        >
-                          <FiX size={16} />
-                        </button>
-                      </>
-                    )}
-                    {p.status !== "pending" && (
-                      <span className="action-complete">Processed</span>
-                    )}
-                  </td>
+<td className="flex gap-2">
+  {p.status === "pending" && (
+    <>
+      <button
+        style={{ color: "#16a34a", cursor: "pointer", border: "none", background: "transparent", padding: "2px" }}
+        onClick={() => handlePaymentAction(p.id, "approved")}
+        title="Approve"
+      >
+        <FiCheck size={16} />
+      </button>
+      <button
+        style={{ color: "#dc2626", cursor: "pointer", border: "none", background: "transparent", padding: "2px" }}
+        onClick={() => handlePaymentAction(p.id, "reject")}
+        title="Reject"
+      >
+        <FiX size={16} />
+      </button>
+    </>
+  )}
+  {p.status !== "pending" && (
+    <span style={{ color: "#6b7280" }}>Processed</span>
+  )}
+</td>
                 </tr>
               ))}
             </tbody>
