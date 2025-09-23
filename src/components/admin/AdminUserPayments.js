@@ -225,7 +225,7 @@ const AdminUserPayments = () => {
                   </td>
 
 <td className="flex gap-2">
-  {p.status === "pending" && (
+  {p.status === "Pending" && (
     <>
       <button
         style={{ color: "#16a34a", cursor: "pointer", border: "none", background: "transparent", padding: "2px" }}
