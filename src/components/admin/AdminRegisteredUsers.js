@@ -8,7 +8,7 @@ const AdminRegisteredUsers = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalType, setModalType] = useState(null); // "docs" | "details"
 
-  const API_BASE_URL = "http://localhost:5000/api";
+  const API_BASE_URL = "https://musabaha-server.onrender.com/api";
 
   const getAuthToken = () => localStorage.getItem("adminToken");
 

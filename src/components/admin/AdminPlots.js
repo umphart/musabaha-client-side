@@ -21,7 +21,7 @@ const AdminPlots = () => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/plots")
+    fetch("https://musabaha-server.onrender.com/api/plots")
       .then(res => res.json())
       .then(data => {
         if (data.success) setPlots(data.data);
@@ -48,7 +48,7 @@ const AdminPlots = () => {
   const handleCreatePlot = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/plots", {
+      const res = await fetch("https://musabaha-server.onrender.com/api/plots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPlot),
@@ -208,7 +208,7 @@ const AdminPlots = () => {
               <form onSubmit={async (e) => {
                 e.preventDefault();
                 try {
-                  const res = await fetch(`http://localhost:5000/api/plots/${editPlot.id}`, {
+                  const res = await fetch(`https://musabaha-server.onrender.com/api/plots/${editPlot.id}`, {
                     method: 'PUT',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(editPlot),

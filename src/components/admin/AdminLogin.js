@@ -15,7 +15,7 @@ const AdminLogin = ({ onAdminLogin }) => {
   const [loading, setLoading] = useState(false);
 
   // Use the correct backend URL - adjust port if needed
-// Use Render backend in production, fallback to localhost for dev
+
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || 'https://musabaha-server.onrender.com';
 
