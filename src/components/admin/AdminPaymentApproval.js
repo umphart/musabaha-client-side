@@ -17,7 +17,7 @@ const AdminPaymentApproval = () => {
 
   useEffect(() => {
     fetchAllPayments();
-    setupWebSocket();
+  
   }, []);
 
   const fetchAllPayments = async () => {
@@ -38,34 +38,9 @@ const AdminPaymentApproval = () => {
     }
   };
 
-  const setupWebSocket = () => {
-    // In a real app, you'd connect to your WebSocket server
-    // This is a simulation of receiving new payment notifications
-    console.log("Setting up WebSocket connection for real-time notifications...");
-    
-    // Simulate receiving a new payment notification after 5 seconds
-    setTimeout(() => {
-      // This would come from your WebSocket in a real implementation
-      simulateNewPaymentNotification();
-    }, 5000);
-  };
+ 
 
-  const simulateNewPaymentNotification = () => {
-    // Simulate a new payment being made
-    Swal.fire({
-      title: 'New Subsequent Payment Received!',
-      text: 'A user has made a new subsequent payment. Check the payments list for details.',
-      icon: 'info',
-      confirmButtonText: 'View Payments',
-      toast: true,
-      position: 'top-end',
-      timer: 5000,
-      showConfirmButton: true
-    });
-    
-    // Refresh the payments list to include the new payment
-    fetchAllPayments();
-  };
+  
 
   const calculateStats = (paymentsData) => {
     let totalDeposited = 0;
