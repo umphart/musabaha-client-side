@@ -225,11 +225,11 @@ const AdminUserPayments = () => {
                   </td>
 
 <td className="flex gap-2">
-  {p.status === "Pending" && (
+  {p.status && p.status.toLowerCase() === "pending" ? (
     <>
       <button
         style={{ color: "#16a34a", cursor: "pointer", border: "none", background: "transparent", padding: "2px" }}
-        onClick={() => handlePaymentAction(p.id, "approved")}
+        onClick={() => handlePaymentAction(p.id, "approve")}
         title="Approve"
       >
         <FiCheck size={16} />
@@ -242,11 +242,11 @@ const AdminUserPayments = () => {
         <FiX size={16} />
       </button>
     </>
-  )}
-  {p.status !== "pending" && (
+  ) : (
     <span style={{ color: "#6b7280" }}>Processed</span>
   )}
 </td>
+
                 </tr>
               ))}
             </tbody>
