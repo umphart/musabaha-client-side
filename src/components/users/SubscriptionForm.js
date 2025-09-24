@@ -74,6 +74,8 @@ const SubscriptionForm = () => {
       try {
         const res = await fetch("https://musabaha-server.onrender.com/api/plots");
         const data = await res.json();
+        console.log("Fetched plots:", data);
+        
         if (data.success) {
           // only keep Available plots
           setPlots(data.data.filter(plot => plot.status === "Available"));
@@ -231,12 +233,10 @@ const SubscriptionForm = () => {
   };
 
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
-  
-  if (!validateStep(5)) {
-    return;
-  }
+
+  if (!validateStep(5)) return;
 
   setIsSubmitting(true);
 
@@ -246,7 +246,6 @@ const SubscriptionForm = () => {
     // Append all formData fields
     for (const key in formData) {
       if (formData[key] !== null && formData[key] !== undefined) {
-        // For file inputs, we need to handle them differently
         if (formData[key] instanceof File) {
           data.append(key, formData[key], formData[key].name);
         } else {
@@ -255,69 +254,88 @@ const SubscriptionForm = () => {
       }
     }
 
+    console.log("Submitting with plotId:", formData.plotId);
+
+    // 🔑 Get JWT token from localStorage
+    const token = localStorage.getItem("userToken");
+
     const response = await fetch("https://musabaha-server.onrender.com/api/subscriptions", {
       method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: data,
     });
 
     const result = await response.json();
-console.log("Submitting with plotId:", formData.plotId);
 
     if (result.success) {
-      // Set success state FIRST
       setSubmitSuccess(true);
-      
+
+      // Refresh plots
+      try {
+        const plotsRes = await fetch("https://musabaha-server.onrender.com/api/plots", {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        const plotsData = await plotsRes.json();
+        if (plotsData.success) {
+          setPlots(plotsData.data.filter((plot) => plot.status === "Available"));
+        }
+      } catch (plotError) {
+        console.error("Error refreshing plots:", plotError);
+      }
+
       // Reset form
       setFormData({
-        title: '',
-        name: '',
-        residentialAddress: '',
-        occupation: '',
-        officeAddress: '',
-        dob: '',
-        stateOfOrigin: '',
-        lga: '',
-        sex: '',
-        telephone: '',
-        nationality: '',
-        officeNumber: '',
-        homeNumber: '',
-        postalAddress: '',
-        email: '',
-        identification: '',
-        utilityBill: '',
+        title: "",
+        name: "",
+        residentialAddress: "",
+        occupation: "",
+        officeAddress: "",
+        dob: "",
+        stateOfOrigin: "",
+        lga: "",
+        sex: "",
+        telephone: "",
+        nationality: "",
+        officeNumber: "",
+        homeNumber: "",
+        postalAddress: "",
+        email: "",
+        identification: "",
+        utilityBill: "",
         passportPhoto: null,
         identificationFile: null,
         utilityBillFile: null,
-        nextOfKinName: '',
-        nextOfKinAddress: '',
-        nextOfKinRelationship: '',
-        nextOfKinTel: '',
-        nextOfKinOccupation: '',
-        nextOfKinOfficeAddress: '',
-        nextOfKinEmail: '',
-        estateName: '',
-        numberOfPlots: '',
-        proposedUse: '',
-        proposedType: '',
-        plotSize: '',
-        paymentTerms: '',
-        altContactName: '',
-        altContactAddress: '',
-        altContactRelationship: '',
-        altContactTel: '',
-        altContactEmail: '',
-        referralAgentName: '',
-        referralAgentContact: '',
+        nextOfKinName: "",
+        nextOfKinAddress: "",
+        nextOfKinRelationship: "",
+        nextOfKinTel: "",
+        nextOfKinOccupation: "",
+        nextOfKinOfficeAddress: "",
+        nextOfKinEmail: "",
+        estateName: "",
+        numberOfPlots: "",
+        proposedUse: "",
+        proposedType: "",
+        price: "",
+        plotSize: "",
+        paymentTerms: "",
+        altContactName: "",
+        altContactAddress: "",
+        altContactRelationship: "",
+        altContactTel: "",
+        altContactEmail: "",
+        referralAgentName: "",
+        referralAgentContact: "",
         agreedToTerms: false,
-        signatureText: '',
-        signatureFile: null
+        signatureText: "",
+        signatureFile: null,
+        plotId: "",
       });
       setErrors({});
-      
-      // Redirect to profile page after 3 seconds
+
+      // Redirect
       setTimeout(() => {
-        navigate('/profile');
+        navigate("/profile");
       }, 3000);
     } else {
       alert("❌ Failed to create subscription: " + (result.message || "Unknown error"));
@@ -481,8 +499,7 @@ console.log("Submitting with plotId:", formData.plotId);
           {/* Step 1: Subscriber's Data */}
           {step === 1 && (
             <div className="form-section">
-              <h4>Subscriber's Data</h4>
-              
+              <h4>Subscriber's Data</h4>        
               <div className="form-row">
                 <div className="form-group">
                   <label>Title *</label>
@@ -964,6 +981,7 @@ console.log("Submitting with plotId:", formData.plotId);
       >
         <option value="">Select Payment Terms</option>
         <option value="Full Payment">Full Payment</option>
+         <option value="Installment - 3 Months">Installment - Monthly</option>
         <option value="Installment - 3 Months">Installment - 3 Months</option>
         <option value="Installment - 6 Months">Installment - 6 Months</option>
         <option value="Installment - 12 Months">Installment - 12 Months</option>
