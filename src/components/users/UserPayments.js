@@ -34,7 +34,7 @@ const UserPayments = ({ user }) => {
     const fetchPayments = async () => {
       try {
         const res = await fetch(
-          `http://ost:5000/api/user-payments/user/${user.id}`
+          `https://musabaha-server.onrender.com/api/user-payments/user/${user.id}`
         );
         const data = await res.json();
         if (data.success) {
